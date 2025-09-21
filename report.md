@@ -1,5 +1,3 @@
-# Search Algorithms Implementation and Performance Analysis
-
 ## 1. Algorithm Implementation
 
 **BFS** uses a queue to explore nodes level by level. It stores (city, path, cost) tuples and maintains a visited set. Finds solutions with minimum edges but not minimum cost in weighted graphs.
