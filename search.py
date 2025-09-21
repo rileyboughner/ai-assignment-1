@@ -1,5 +1,6 @@
 from collections import deque
 import heapq
+import matplotlib.pyplot as plt
 
 def load_romania_graph():
     graph = {
@@ -150,6 +151,52 @@ def heuristic_bucharest(city, sld):
 def heuristic_abs_diff(city, goal, sld):
     return abs(sld.get(city, float("inf")) - sld.get(goal, float("inf")))
 
+def run_experiments():
+    graph = load_romania_graph()
+    sld = load_sld_to_bucharest()
+    start = "Arad"
+    goal = "Bucharest"
+
+    results = {}
+
+    results['BFS'] = bfs(graph, start, goal)
+
+    results['DFS'] = dfs(graph, start, goal)
+
+    results['Greedy'] = greedy_best_first(
+        graph, start, goal, lambda city: heuristic_bucharest(city, sld)
+    )
+
+    results['A*'] = a_star(
+        graph, start, goal, lambda city: heuristic_bucharest(city, sld)
+    )
+
+    return results
+
+def plot_results(results):
+    algorithms = list(results.keys())
+    costs = [results[alg][1] for alg in algorithms]
+    nodes_expanded = [results[alg][2] for alg in algorithms]
+    max_fringe = [results[alg][3] for alg in algorithms]
+
+    plt.figure(figsize=(8,5))
+    plt.bar(algorithms, costs, color='skyblue')
+    plt.ylabel("Path Cost")
+    plt.title("Path Cost by Algorithm")
+    plt.show()
+
+    plt.figure(figsize=(8,5))
+    plt.bar(algorithms, nodes_expanded, color='salmon')
+    plt.ylabel("Nodes Expanded")
+    plt.title("Nodes Expanded by Algorithm")
+    plt.show()
+
+    plt.figure(figsize=(8,5))
+    plt.bar(algorithms, max_fringe, color='lightgreen')
+    plt.ylabel("Max Fringe Size")
+    plt.title("Max Fringe Size by Algorithm")
+    plt.show()
+
 def main():
     graph = load_romania_graph()
     sld = load_sld_to_bucharest()
@@ -206,6 +253,10 @@ def main():
     print("Cost:", cost)
     print("Nodes expanded:", expanded)
     print("Max fringe size:", max_fringe)
+
+
+results = run_experiments()
+plot_results(results)
 
 
 if __name__ == "__main__":
