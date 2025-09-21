@@ -255,9 +255,10 @@ def main():
     print("Max fringe size:", max_fringe)
 
 
-results = run_experiments()
-plot_results(results)
-
-
 if __name__ == "__main__":
     main()
+
+#this will make the graphs
+#results = run_experiments()
+#plot_results(results)
+
